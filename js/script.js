@@ -6,6 +6,7 @@ const radio = document.querySelector('.radio').children
 const radioAll = radio[0]
 const radioCompleted = radio[1]
 const radioUncompleted = radio[2]
+const radioSpawn = document.getElementById('toDoItemCompleted')
 
 
 function findElement(elements,id){
@@ -21,9 +22,9 @@ form.addEventListener('submit',function (e){
     if (!heading.value || !content.value){
         return alert('Заполните все поля')
     };
-    
 
     let temple = createTemples(heading.value , content.value,itemId);
+
 
     useStorage(heading.value,content.value)
 
@@ -124,6 +125,9 @@ function createTemples(heading,content,id,status=false){
         mainWrp.className = 'col-4 mainWrp'
         mainWrp.setAttribute('data-id',id)
         mainWrp.setAttribute('completed',status)
+        if (radioSpawn.getAttribute('data-status')=='true') {
+          mainWrp.setAttribute('hidden','true')
+        }
 
     let taskWrp = document.createElement('div')
         taskWrp.className = 'taskWrapper'
@@ -190,6 +194,11 @@ deleteAll.addEventListener('click',function (){
 
 
 radioAll.addEventListener('change',function (e){
+
+  if (radioSpawn.getAttribute('data-status')== 'true') {
+    radioSpawn.setAttribute('data-status','false')
+  }
+
   for (let i = 0; i < mainWrapper.length; i++) {
 
           mainWrapper[i].removeAttribute('hidden')
@@ -201,7 +210,16 @@ radioAll.addEventListener('change',function (e){
 })
 
 radioCompleted.addEventListener('change',function (e){
+  let status = e.target.checked
+
+    if (status) {
+      e.target.setAttribute('data-status','true')
+    }
+
   for (let i = 0; i < mainWrapper.length; i++) {
+
+
+
         if (mainWrapper[i].getAttribute('completed') == 'false') {
           mainWrapper[i].setAttribute('hidden','true')
         }
@@ -212,6 +230,11 @@ radioCompleted.addEventListener('change',function (e){
 })
 
 radioUncompleted.addEventListener('change',function () {
+
+     if (radioSpawn.getAttribute('data-status')== 'true') {
+       radioSpawn.setAttribute('data-status','false')
+     }
+
 
   for (let i = 0; i < mainWrapper.length; i++) {
         if (mainWrapper[i].getAttribute('completed') == 'true') {
