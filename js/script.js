@@ -21,7 +21,7 @@ form.addEventListener('submit',function (e){
     if (!heading.value || !content.value){
         return alert('Заполните все поля')
     };
-    radioAll.setAttribute('checked','true')
+    
 
     let temple = createTemples(heading.value , content.value,itemId);
 
