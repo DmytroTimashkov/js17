@@ -2,6 +2,10 @@ let itemId = localStorage.itemId ? +localStorage.getItem('itemId') : 1;
 const form = document.getElementById('todoForm');
 let toDoContainer = document.getElementById('todoItems')
 let storeId ='toDoItems'
+const radio = document.querySelector('.radio').children
+const radioAll = radio[0]
+const radioCompleted = radio[1]
+const radioUncompleted = radio[2]
 
 
 function findElement(elements,id){
@@ -17,6 +21,7 @@ form.addEventListener('submit',function (e){
     if (!heading.value || !content.value){
         return alert('Заполните все поля')
     };
+    radioAll.setAttribute('checked','true')
 
     let temple = createTemples(heading.value , content.value,itemId);
 
@@ -42,9 +47,12 @@ toDoContainer.addEventListener('change',function (e){
     let toDoItemId = +toDoItem.getAttribute('data-id')
     let toDoItems = JSON.parse(localStorage[storeId])
     let status = e.target.checked;
-
-
-
+    if (status) {
+      toDoItem.setAttribute('completed','true')
+    }
+    if (!status) {
+      toDoItem.setAttribute('completed','false')
+    }
     let currentToDoItem = findElement(toDoItems,toDoItemId)
 
 
@@ -114,10 +122,12 @@ function useStorage(heading,content,status=false){
 function createTemples(heading,content,id,status=false){
     let mainWrp = document.createElement('div')
         mainWrp.className = 'col-4 mainWrp'
+        mainWrp.setAttribute('data-id',id)
+        mainWrp.setAttribute('completed',status)
 
     let taskWrp = document.createElement('div')
         taskWrp.className = 'taskWrapper'
-        taskWrp.setAttribute('data-id',id)
+
 
     let headline = document.createElement('div')
         headline.className = 'taskHeading'
@@ -160,7 +170,7 @@ function createTemples(heading,content,id,status=false){
 }
 
 let deleteAll = document.createElement('button')
-deleteAll.className = 'btn btn-warning w-100'
+deleteAll.className = 'btn btn-warning w-100 mb-4'
 deleteAll.innerHTML = 'remove all'
 
 form.after(deleteAll)
@@ -171,6 +181,46 @@ deleteAll.addEventListener('click',function (){
     }
     localStorage.clear()
 
+
+
+})
+
+
+
+
+
+radioAll.addEventListener('change',function (e){
+  for (let i = 0; i < mainWrapper.length; i++) {
+
+          mainWrapper[i].removeAttribute('hidden')
+
+
+  }
+
+
+})
+
+radioCompleted.addEventListener('change',function (e){
+  for (let i = 0; i < mainWrapper.length; i++) {
+        if (mainWrapper[i].getAttribute('completed') == 'false') {
+          mainWrapper[i].setAttribute('hidden','true')
+        }
+        if (mainWrapper[i].getAttribute('completed') == 'true') {
+          mainWrapper[i].removeAttribute('hidden')
+        }
+  }
+})
+
+radioUncompleted.addEventListener('change',function () {
+
+  for (let i = 0; i < mainWrapper.length; i++) {
+        if (mainWrapper[i].getAttribute('completed') == 'true') {
+          mainWrapper[i].setAttribute('hidden','true')
+        }
+        if (mainWrapper[i].getAttribute('completed') == 'false') {
+          mainWrapper[i].removeAttribute('hidden')
+        }
+  }
 
 
 })
