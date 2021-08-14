@@ -125,7 +125,7 @@ function createTemples(heading,content,id,status=false){
         mainWrp.className = 'col-4 mainWrp'
         mainWrp.setAttribute('data-id',id)
         mainWrp.setAttribute('completed',status)
-        if (radioSpawn.getAttribute('data-status')=='true') {
+        if (radioSpawn.getAttribute('data-status') == 'true') {
           mainWrp.setAttribute('hidden','true')
         }
 
